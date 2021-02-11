@@ -44,7 +44,7 @@ const updateEstado = (request, response, next) => {
 module.exports.updateEstado = updateEstado;
 
 const deleteEstado = (request, response, next) => {
-    const codigo = parseInt(request.params.id)
+    const codigo = parseInt(request.params.codigo)
 
     pool.query(
         'DELETE from estados where codigo=$1',
@@ -60,7 +60,7 @@ const deleteEstado = (request, response, next) => {
 module.exports.deleteEstado = deleteEstado;
 
 const getEstadoPorID = (request, response, next) => {
-    const codigo = parseInt(request.params.id)
+    const codigo = parseInt(request.params.codigo)
     pool.query('SELECT * FROM estados where codigo = $1', [codigo], (error, results) => {
         if (error || results.rowCount == 0) {
             return response.status(401).json({ status: 'error', message: 'Não foi possivel recuperar o estado' });

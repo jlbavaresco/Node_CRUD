@@ -16,11 +16,13 @@ const getCidades = (request, response, next) => {
 module.exports.getCidades = getCidades;
 
 const addCidade = (request, response, next) => {
+    console.log("recebido da app")
+    console.log(request.body)
     const { nome, estado} = request.body
 
     pool.query(
         'INSERT INTO cidades (nome, estado) values ($1, $2)',
-        [nome, estado],
+        [nome, parseInt(estado)],
         (error) => {
             if (error) {
                 throw error
@@ -32,7 +34,7 @@ const addCidade = (request, response, next) => {
 module.exports.addCidade = addCidade;
 
 const updateCidade = (request, response, next) => {
-    const { codigo, nome, uf } = request.body
+    const { codigo, nome, estado } = request.body
     pool.query(
         'UPDATE cidades set nome = $1, estado = $2 where codigo = $3',
         [nome, estado, codigo],
@@ -47,7 +49,7 @@ const updateCidade = (request, response, next) => {
 module.exports.updateCidade = updateCidade;
 
 const deleteCidade = (request, response, next) => {
-    const codigo = parseInt(request.params.id)
+    const codigo = parseInt(request.params.codigo)
 
     pool.query(
         'DELETE from cidades where codigo=$1',

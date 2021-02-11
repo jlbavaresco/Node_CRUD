@@ -18,7 +18,7 @@ app
     .get(controleEstado.getEstados)
     .post(controleEstado.addEstado)
     .put(controleEstado.updateEstado)
-app.route('/api/estados/:id')
+app.route('/api/estados/:codigo')
     .get(controleEstado.getEstadoPorID)
     .delete(controleEstado.deleteEstado)
 app
@@ -26,7 +26,7 @@ app
     .get(controleCidade.getCidades)
     .post(controleCidade.addCidade)
     .put(controleCidade.updateCidade)
-app.route('/api/cidades/:id')
+app.route('/api/cidades/:codigo')
     .get(controleCidade.getCidadePorID)
     .delete(controleCidade.deleteCidade)
 
