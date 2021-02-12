@@ -16,8 +16,6 @@ const getCidades = (request, response, next) => {
 module.exports.getCidades = getCidades;
 
 const addCidade = (request, response, next) => {
-    console.log("recebido da app")
-    console.log(request.body)
     const { nome, estado} = request.body
 
     pool.query(

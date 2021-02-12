@@ -6,6 +6,7 @@ class AddEditForm extends React.Component {
     id: 0,
     nome: '',
     estado: '',
+    estado_codigo : '',
     estados: []
   }
 
@@ -20,7 +21,7 @@ class AddEditForm extends React.Component {
     try {
       const body = {
         nome: this.state.nome,
-        estado: this.state.estado
+        estado: this.state.estado_codigo
       };
       const response = await fetch("http://localhost:3002/api/cidades", {
         method: "POST",
@@ -40,7 +41,7 @@ class AddEditForm extends React.Component {
       const body = {
         codigo: this.state.codigo,
         nome: this.state.nome,
-        estado: this.state.estado
+        estado: this.state.estado_codigo
       };
       const response = await fetch("http://localhost:3002/api/cidades", {
         method: "PUT",
@@ -65,16 +66,15 @@ class AddEditForm extends React.Component {
           return {value: estado.codigo, display: estado.nome}
         });
         this.setState({
-          estados: [{value: '', display: '(Selecione o estado)'}].concat(estadosDaApi)
+         estados: [{value: '', display: '(Selecione o estado)'}].concat(estadosDaApi)         
         });
       }).catch(error => {
         console.log(error);
       });
-      
-
-      const { codigo, nome, estado } = this.props.item
-      this.setState({ codigo, nome, estado })
-
+      if (this.props.item != null){
+        const { codigo, nome, estado, estado_codigo } = this.props.item
+        this.setState({ codigo, nome, estado, estado_codigo })
+      }
   }
 
   render() {
@@ -88,9 +88,9 @@ class AddEditForm extends React.Component {
         </FormGroup>
         <FormGroup>
           <Label for="estado">Estado</Label>
-          <Input type="select" name="estado" id="estado"
-            onChange={this.onChange} value={this.state.estado === null ? '' : this.state.estado}>            
-            {this.state.estados.map((estado) => <option key={estado.value} value={estado.value}>{estado.display}</option>)}         
+          <Input type="select" name="estado_codigo" id="estado_codigo"
+            onChange={this.onChange} value={this.state.estado_codigo === null ? '' : this.state.estado_codigo}>            
+            {this.state.estados.map((estadoitem) => <option  key={estadoitem.value} value={estadoitem.value} >{estadoitem.display}</option>)}         
           </Input>
         </FormGroup>
         <Button color="primary">Submit</Button>
