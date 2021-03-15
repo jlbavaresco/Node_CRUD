@@ -35,6 +35,9 @@ const Menu = (props) => {
                                 <DropdownItem>
                                     <NavLink exact href="/cidades">Cidades</NavLink>
                                 </DropdownItem>
+                                <DropdownItem>
+                                    <NavLink exact href="/pessoas">Pessoas</NavLink>
+                                </DropdownItem>                                
                             </DropdownMenu>
                         </UncontrolledDropdown>
                     </Nav>
