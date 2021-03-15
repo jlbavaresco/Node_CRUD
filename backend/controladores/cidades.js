@@ -63,10 +63,10 @@ const deleteCidade = (request, response, next) => {
 module.exports.deleteCidade = deleteCidade;
 
 const getCidadePorID = (request, response, next) => {
-    const codigo = parseInt(request.params.id)
+    const codigo = parseInt(request.params.codigo)
     pool.query('SELECT c.codigo as codigo, c.nome as nome, c.estado as estado_codigo, e. nome as estado '
     + ' from cidades c'
-    + ' join estados e on e.codigo = c.estado where codigo = $1', [codigo], (error, results) => {
+    + ' join estados e on e.codigo = c.estado where c.codigo = $1', [codigo], (error, results) => {
         if (error || results.rowCount == 0) {
             return response.status(401).json({ status: 'error', message: 'Não foi possivel recuperar a cidade' });
         }

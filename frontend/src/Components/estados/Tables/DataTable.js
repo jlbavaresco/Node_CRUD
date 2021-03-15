@@ -37,7 +37,7 @@ class DataTable extends Component {
             method: "DELETE",
           }
         );
-        window.location = "/";
+        window.location = "/estados";
         // setExperiments(experiments.filter((experiment) => experiment.id !== id));
       } catch (err) {
         console.error(err.message);

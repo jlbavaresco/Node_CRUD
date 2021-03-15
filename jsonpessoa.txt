@@ -1,0 +1,6 @@
+    {
+        "nome": "Jorge Bavaresco",
+        "nascimento": "25/10/1979",
+        "salario": "5000.00",
+        "cidade": "1"
+    } 

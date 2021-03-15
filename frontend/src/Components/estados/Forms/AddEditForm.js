@@ -50,7 +50,7 @@ class AddEditForm extends React.Component {
         body: JSON.stringify(body),
       });
 
-      window.location = "/";
+      window.location = "/estados";
     } catch (err) {
       console.error(err.message);
     }
@@ -70,7 +70,7 @@ class AddEditForm extends React.Component {
         body: JSON.stringify(body),
       });
 
-      window.location = "/";
+      window.location = "/estados";
     } catch (err) {
       console.error(err.message);
     }
