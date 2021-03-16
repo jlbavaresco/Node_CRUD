@@ -26,11 +26,14 @@ class DataTable extends Component {
   render() {
 
     const items = this.props.items.map(item => {
+      // formatando a data para ser exibida na tabela no formato dd/mm/yyyy vem da api yyyy/mm/dd
+      var arrNascimento = item.nascimento.split('-');
+      var nascimentoFormatado = arrNascimento[2] + '/' + arrNascimento[1] + '/' + arrNascimento[0];
       return (
         <tr key={item.codigo}>
           <th scope="row">{item.codigo}</th>
           <td>{item.nome}</td>
-          <td>{item.nascimento}</td>
+          <td>{nascimentoFormatado}</td>
           <td>{item.salario}</td>
           <td>{item.cidade}</td>
           <td>{item.cidade_codigo}</td>

@@ -37,7 +37,7 @@ const Menu = (props) => {
                                 </DropdownItem>
                                 <DropdownItem>
                                     <NavLink exact href="/pessoas">Pessoas</NavLink>
-                                </DropdownItem>                                
+                                </DropdownItem>
                             </DropdownMenu>
                         </UncontrolledDropdown>
                     </Nav>

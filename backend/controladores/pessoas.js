@@ -3,7 +3,7 @@ const { request, response } = require("express");
 
 
 const getPessoas = (request, response, next) => {
-    sql = 'SELECT p.codigo as codigo, p.nome as nome, to_char(p.nascimento, \'DD/MM/YYYY\') as nascimento, p.salario as salario,'
+    sql = 'SELECT p.codigo as codigo, p.nome as nome, to_char(p.nascimento, \'YYYY-MM-DD\') as nascimento, p.salario as salario,'
     + ' p.cidade as cidade_codigo, c.nome as cidade '
     + ' from pessoas p'
     + ' join cidades c on c.codigo = p.cidade '
@@ -18,14 +18,6 @@ module.exports.getPessoas = getPessoas;
 
 const addPessoa = (request, response, next) => {
     const { nome, nascimento, salario, cidade} = request.body
-    //console.log('recebi: ' + nascimento)
-    //var arrNascimento = nascimento.split('/');
-
-    //var nascimentoFormatado = arrNascimento[2] + '-' + arrNascimento[1] + '-' +
-       // arrNascimento[0];
-   // console.log('Nascimento tratado: ' + nascimentoFormatado)
-   // var dataFormatada1 = new Date(stringFormatada);
-    //var nascimentoNovo = new Date(nascimentoFormatado);
     pool.query(
         'INSERT INTO pessoas (nome, nascimento, salario, cidade)  values ($1, $2, $3, $4)',
         [nome, nascimento, parseFloat(salario), parseInt(cidade)],
