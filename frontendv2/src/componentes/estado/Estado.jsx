@@ -6,17 +6,20 @@ import Tabela from "./Tabela";
 import Cadastrar from "./Cadastrar";
 import { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import axios from 'axios';
 
 class Estado extends Component {
 
   state = {
     listaObjetos: [],
-    sequenciacodigo: 0
+    sequenciacodigo: 0,
+    objetoRecuperado: { codigo: 0, nome: "", uf: "" }
+
   };
 
 
-  getListaObjetos() {
-    fetch('http://localhost:3002/api/estados')
+  async getListaObjetos() {
+    await fetch('http://localhost:3002/api/estados')
       .then(response => response.json())
       .then(listaObjetos => this.setState({ listaObjetos }))
       .catch(err => console.log(err))
@@ -45,20 +48,32 @@ class Estado extends Component {
     });
   };
 
-  remover = objeto => {
+  remover = async objeto => {
     if (window.confirm("Remover este objeto?")) {
       try {
-        fetch(
+        await fetch(
           `http://localhost:3002/api/estados/${objeto.codigo}`,
           {
             method: "DELETE",
           }
-        );   
-        window.location = "/estado";                    
+        );
+        window.location = "/estado";
       } catch (err) {
         console.error(err.message);
       }
     }
+  }
+
+  recuperar = async codigo => {
+    // aqui eu recupero um unico objeto passando o id
+    await fetch(`http://localhost:3002/api/estados/${codigo}`)
+      .then(response => response.json())
+      .then(data => this.setState({
+        objetoRecuperado: data[0] // aqui pego o primeiro elemento do json que foi recuperado  data[0]
+      }))
+      .catch(err => console.log(err))
+    console.log("Objeto recuperado: " + this.state.objetoRecuperado.codigo +
+      " Nome: " + this.state.objetoRecuperado.nome + " UF: " + this.state.objetoRecuperado.uf)
   }
 
 
@@ -72,7 +87,8 @@ class Estado extends Component {
         <Router>
 
           <Switch>
-            <Route exact path="/estado" render={() => <Tabela listaObjetos={this.state.listaObjetos} remover={this.remover}/>} />
+            <Route exact path="/estado" render={() => <Tabela listaObjetos={this.state.listaObjetos} remover={this.remover}
+              recuperar={this.recuperar} />} />
             <Route exact path="/cadastrarestado" render={() => <Cadastrar inserir={this.inserir}
               objeto={{ codigo: 0, nome: "", uf: "" }} />} />
             <Route exact path="/editarestado/:codigo"
@@ -91,6 +107,7 @@ class Estado extends Component {
                   return <Redirect to="/estado" />;
                 }
               }} />
+
           </Switch>
         </Router>
       </div>

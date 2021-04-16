@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Tabela = ({ listaObjetos, remover }) => {
+const Tabela = ({ listaObjetos, remover, recuperar }) => {
     return (
         <div>
             <h1>Tabela de Estados</h1>
@@ -36,6 +36,7 @@ const Tabela = ({ listaObjetos, remover }) => {
                                     <button className="btn btn-danger" title="Remover" onClick={() => {
                                         remover(objeto);
                                     }}><i className="bi bi-trash"></i></button>
+                                    <button  title="Recuperar" onClick={() => { recuperar(objeto.codigo);}}>Recuperar</button>                                    
                                 </td>                               
                             </tr>
                         ))}

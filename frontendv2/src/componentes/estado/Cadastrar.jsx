@@ -12,7 +12,7 @@ class Cadastrar extends Component {
         redirecionar: false
     };
 
-    acaoCadastrar = e => {
+    acaoCadastrar = async e => {
         e.preventDefault();
         if (this.props.editar) {
             //this.props.editar(this.state.objeto);
@@ -22,7 +22,7 @@ class Cadastrar extends Component {
                   nome: this.state.objeto.nome,
                   uf: this.state.objeto.uf
                 };
-                const response =  fetch("http://localhost:3002/api/estados", {
+                 const response =  await fetch("http://localhost:3002/api/estados", {
                   method: "PUT",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify(body),
@@ -39,7 +39,7 @@ class Cadastrar extends Component {
                   nome: this.state.objeto.nome,
                   uf: this.state.objeto.uf
                 };
-                const response = fetch("http://localhost:3002/api/estados", {
+                const response = await fetch("http://localhost:3002/api/estados", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify(body),
@@ -52,6 +52,7 @@ class Cadastrar extends Component {
         }
         this.setState({ redirecionar: true });
     };
+
 
     render() {
         if (this.state.redirecionar === true) {
