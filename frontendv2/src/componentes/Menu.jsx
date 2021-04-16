@@ -11,6 +11,7 @@ const Menu = props => {
                 <div className="navbar-nav">
                     
                     <a className="nav-item nav-link" href="/estado">CRUD Estado</a>
+                    <a className="nav-item nav-link" href="/cidade">CRUD Cidade</a>
                 </div>
             </div>
         </nav>

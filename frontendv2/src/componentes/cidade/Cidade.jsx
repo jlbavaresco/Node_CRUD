@@ -19,7 +19,7 @@ class Estado extends Component {
 
 
   async getListaObjetos() {
-    await fetch('http://localhost:3002/api/estados')
+    await fetch('http://localhost:3002/api/cidades')
       .then(response => response.json())
       .then(listaObjetos => this.setState({ listaObjetos }))
       .catch(err => console.log(err))
@@ -29,12 +29,12 @@ class Estado extends Component {
     if (window.confirm("Remover este objeto?")) {
       try {
         await fetch(
-          `http://localhost:3002/api/estados/${objeto.codigo}`,
+          `http://localhost:3002/api/cidades/${objeto.codigo}`,
           {
             method: "DELETE",
           }
         );
-        window.location = "/estado";
+        window.location = "/cidade";
       } catch (err) {
         console.error(err.message);
       }
@@ -43,7 +43,7 @@ class Estado extends Component {
 
   recuperar = async codigo => {
     // aqui eu recupero um unico objeto passando o id
-    await fetch(`http://localhost:3002/api/estados/${codigo}`)
+    await fetch(`http://localhost:3002/api/cidades/${codigo}`)
       .then(response => response.json())
       .then(data => this.setState({
         objetoRecuperado: data[0] // aqui pego o primeiro elemento do json que foi recuperado  data[0]
@@ -64,11 +64,11 @@ class Estado extends Component {
         <Router>
 
           <Switch>
-            <Route exact path="/estado" render={() => <Tabela listaObjetos={this.state.listaObjetos} remover={this.remover}
+            <Route exact path="/cidade" render={() => <Tabela listaObjetos={this.state.listaObjetos} remover={this.remover}
               recuperar={this.recuperar} />} />
-            <Route exact path="/cadastrarestado" render={() => <Cadastrar editar={false}
+            <Route exact path="/cadastrarcidade" render={() => <Cadastrar editar={false}
               objeto={{ codigo: 0, nome: "", uf: "" }} />} />
-            <Route exact path="/editarestado/:codigo"
+            <Route exact path="/editarcidade/:codigo"
               render={props => {
                 console.log("props: " + props.match.params.codigo)
                 const objeto = this.state.listaObjetos.find(
@@ -81,7 +81,7 @@ class Estado extends Component {
                   )
                 } else {
                   console.log("caiu no else")
-                  return <Redirect to="/estado" />;
+                  return <Redirect to="/cidade" />;
                 }
               }} />
 

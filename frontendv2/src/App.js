@@ -7,6 +7,7 @@ import 'font-awesome/css/font-awesome.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css' // lista de icones https://icons.getbootstrap.com/
 import Menu from "./componentes/Menu";
 import Estado from "./componentes/estado/Estado";
+import Cidade from "./componentes/cidade/Cidade";
 import { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ class App extends Component {
           <Menu />
           <Switch>
             <Route exact path="/estado" render={() => <Estado  />} />
+            <Route exact path="/cidade" render={() => <Cidade  />} />
    
           </Switch>
         </Router>
