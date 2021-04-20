@@ -3,7 +3,7 @@ const { request, response } = require("express");
 
 
 const getEstados = (request, response, next) => {
-    pool.query('SELECT * FROM estados', (error, results) => {
+    pool.query('SELECT * FROM estados order by nome', (error, results) => {
         if (error) {
             throw error
         }

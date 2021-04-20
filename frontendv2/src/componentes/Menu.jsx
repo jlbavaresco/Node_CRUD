@@ -12,6 +12,7 @@ const Menu = props => {
                     
                     <a className="nav-item nav-link" href="/estado">CRUD Estado</a>
                     <a className="nav-item nav-link" href="/cidade">CRUD Cidade</a>
+                    <a className="nav-item nav-link" href="/pessoa">CRUD Pessoa</a>
                 </div>
             </div>
         </nav>

@@ -3,14 +3,16 @@ import { Redirect } from 'react-router-dom'
 
 class Cadastrar extends Component {
 
+
     state = {
         objeto: {
             codigo: this.props.objeto.codigo,
             nome: this.props.objeto.nome,
-            estado: this.props.objeto.estado,
-            estado_codigo: this.props.objeto.estado_codigo,            
+            nascimento: this.props.objeto.nascimento,
+            salario: this.props.objeto.salario,
+            cidade_codigo : this.props.objeto.cidade_codigo           
         },
-        estados: [],
+        cidades: [],
         redirecionar: false
     };
 
@@ -21,31 +23,35 @@ class Cadastrar extends Component {
                 const body = {
                     codigo: this.state.objeto.codigo,
                     nome: this.state.objeto.nome,
-                    estado: this.state.objeto.estado_codigo
+                    nascimento: this.state.objeto.nascimento,
+                    salario: this.state.objeto.salario,
+                    cidade: this.state.objeto.cidade_codigo                    
                 };
-                const response = await fetch("http://localhost:3002/api/cidades", {
+                const response = await fetch("http://localhost:3002/api/pessoas", {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body),
                 });
 
-                window.location = "/cidade";
+                window.location = "/pessoa";
             } catch (err) {
                 console.error(err.message);
             }
         } else {
             try {
-                const body = {
+                const body = {    
                     nome: this.state.objeto.nome,
-                    estado: this.state.objeto.estado_codigo
+                    nascimento: this.state.objeto.nascimento,
+                    salario: this.state.objeto.salario,
+                    cidade: this.state.objeto.cidade_codigo                    
                 };
-                const response = await fetch("http://localhost:3002/api/cidades", {
+                const response = await fetch("http://localhost:3002/api/pessoas", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body),
                 });
 
-                window.location = "/cidade";
+                window.location = "/pessoa";
             } catch (err) {
                 console.error(err.message);
             }
@@ -55,33 +61,33 @@ class Cadastrar extends Component {
 
     componentDidMount() {
         // if item exists, populate the state with proper data      
-        fetch("http://localhost:3002/api/estados")
+        fetch("http://localhost:3002/api/cidades")
             .then((response) => {
                 return response.json();
             })
             .then(data => {
-                let estadosDaApi = data.map(estado => {
-                    return { value: estado.codigo, display: estado.nome }
+                let cidadesDaApi = data.map(cidade => {
+                    return { value: cidade.codigo, display: cidade.nome }
                 });
                 this.setState({
-                    estados: [{ value: '', display: '(Selecione o estado)' }].concat(estadosDaApi)
+                    cidades: [{ value: '', display: '(Selecione a cidade)' }].concat(cidadesDaApi)
                 });
             }).catch(error => {
                 console.log(error);
-            }); 
+            });      
     }
 
 
     render() {
         if (this.state.redirecionar === true) {
-            return <Redirect to="/cidade" />
+            return <Redirect to="/pessoa" />
         }
         return (
 
 
 
             <div style={{ padding: '20px' }}>
-                <h2>Edição de estado</h2>
+                <h2>Edição de Pessoa</h2>
                 <form id="formulario" onSubmit={this.acaoCadastrar}>
                     <div className="form-group">
                         <label htmlFor="txtCodigo" className="form-label">Código</label>
@@ -108,18 +114,42 @@ class Cadastrar extends Component {
                             } />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="selectEstado" className="form-label">Estado</label>
-                        <select  required className="form-control" id="selectEstado"
-                            defaultValue={this.props.estado_codigo} value={this.state.objeto.estado_codigo}
+                        <label htmlFor="txtNascimento" className="form-label">Nome</label>
+                        <input type="date" required className="form-control" id="txtNascimento"
+                            defaultValue={this.props.nascimento} value={this.state.objeto.nascimento}
                             onChange={
                                 e => this.setState({
                                     objeto: {
-                                        ...this.state.objeto, estado_codigo: e.target.value
+                                        ...this.state.objeto, nascimento: e.target.value
+                                    }
+                                })
+                            } />
+                    </div>   
+                    <div className="form-group">
+                        <label htmlFor="txtSalario" className="form-label">Salário</label>
+                        <input type="number" required className="form-control" id="txtSalario" size="40" maxLength="40"
+                            defaultValue={this.props.salario} value={this.state.objeto.salario}
+                            onChange={
+                                e => this.setState({
+                                    objeto: {
+                                        ...this.state.objeto, salario: e.target.value
+                                    }
+                                })
+                            } />
+                    </div>                                       
+                    <div className="form-group">
+                        <label htmlFor="selectCidade" className="form-label">Cidade</label>
+                        <select  required className="form-control" id="selectCidade"
+                            defaultValue={this.props.cidade_codigo} value={this.state.objeto.cidade_codigo}
+                            onChange={
+                                e => this.setState({
+                                    objeto: {
+                                        ...this.state.objeto, cidade_codigo: e.target.value
                                     }
                                 })
                             } >
                           
-                          {this.state.estados.map((estadoitem) => <option  key={estadoitem.value} value={estadoitem.value} >{estadoitem.display}</option>)}                                
+                          {this.state.cidades.map((cidadeitem) => <option  key={cidadeitem.value} value={cidadeitem.value} >{cidadeitem.display}</option>)}                                
                         </select>
 
                     </div>
