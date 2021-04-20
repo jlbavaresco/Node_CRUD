@@ -13,6 +13,7 @@ app.use(cors())
 const controleEstado = require("./controladores/estados");
 const controleCidade = require("./controladores/cidades");
 const controlePessoa = require("./controladores/pessoas");
+const controleTelefone = require("./controladores/telefones");
 
 app
     .route('/api/estados')
@@ -37,7 +38,16 @@ app
     .put(controlePessoa.updatePessoa)
 app.route('/api/pessoas/:codigo')
     .get(controlePessoa.getPessoaPorID)
-    .delete(controlePessoa.deletePessoa)    
+    .delete(controlePessoa.deletePessoa) 
+
+app
+    .route('/api/telefones')
+    .post(controleTelefone.addTelefone)
+    .put(controleTelefone.updateTelefone)
+app.route('/api/telefones/:codigopessoa')
+    .get(controleTelefone.getTelefones)
+app.route('/api/telefones/:codigo')    
+    .delete(controleTelefone.deleteTelefone)  
 
 
 app.listen(process.env.PORT || 3002, () => {
