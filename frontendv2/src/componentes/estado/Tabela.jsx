@@ -11,7 +11,7 @@ const Tabela = ({ listaObjetos, remover, recuperar }) => {
             </Link>            
             {listaObjetos.length === 0 && <h2>Nenhum registro encontrado</h2>}
             {listaObjetos.length > 0 && (
-                <table className="table">
+                <table className="table" id="tabela">
                     <thead>
                         <tr>
                             <th scope="col" width="17%">Código</th>

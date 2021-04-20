@@ -7,7 +7,7 @@ const formataData = (data) => {
     return nascimentoFormatado;
 }
 
-const Tabela = ({ listaObjetos, remover }) => {
+const Tabela = ({ listaObjetos, remover , recuperarTelefones}) => {
     return (
         <div>
             <h1>Tabela de Cidades</h1>
@@ -25,9 +25,10 @@ const Tabela = ({ listaObjetos, remover }) => {
                             <th scope="col">Nascimento</th>
                             <th scope="col">Salario</th>
                             <th scope="col">Cidade</th>
-                            <th scope="col">Cidade codigo</th>
-                            <th width="7%"></th>
-                            <th width="9%"></th>
+                            <th width="3%"></th>
+                            <th width="3%"></th>
+                            <th width="3%"></th>
+                            <th width="3%"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,7 +39,6 @@ const Tabela = ({ listaObjetos, remover }) => {
                                 <td>{formataData(objeto.nascimento)}</td>
                                 <td>{objeto.salario}</td>
                                 <td>{objeto.cidade}</td>
-                                <td>{objeto.cidade_codigo}</td>
                                 <td>
                                     <Link title="Editar" className="btn btn-info" to={`/editarpessoa/${objeto.codigo}`}>
                                         <i className="bi bi-pencil-square"></i>
@@ -49,6 +49,16 @@ const Tabela = ({ listaObjetos, remover }) => {
                                         remover(objeto);
                                     }}><i className="bi bi-trash"></i></button>
                                 </td>
+                                <td>
+                                <button  title="Telefones" className="btn btn-warning" onClick={() => { recuperarTelefones(objeto.codigo);}}>
+                                    <i className="bi bi-phone"></i></button>                                                                    
+                                </td>
+                                <td>
+                                    <Link title="Editar telefones" 
+                                    className="btn btn-success" to={`/editartelefones/${objeto.codigo}`}>
+                                        <i className="bi bi-phone"></i>
+                                    </Link>
+                                </td>                                
                             </tr>
                         ))}
                     </tbody>

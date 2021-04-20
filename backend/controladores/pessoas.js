@@ -6,7 +6,7 @@ const getPessoas = (request, response, next) => {
     sql = 'SELECT p.codigo as codigo, p.nome as nome, to_char(p.nascimento, \'YYYY-MM-DD\') as nascimento, p.salario as salario,'
     + ' p.cidade as cidade_codigo, c.nome as cidade '
     + ' from pessoas p'
-    + ' join cidades c on c.codigo = p.cidade '
+    + ' join cidades c on c.codigo = p.cidade order by p.codigo'
     pool.query(sql, (error, results) => {
         if (error) {
             throw error
