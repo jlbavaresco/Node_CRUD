@@ -55,7 +55,7 @@ const Tabela = ({ listaObjetos, remover , recuperarTelefones}) => {
                                 </td>
                                 <td>
                                     <Link title="Editar telefones" 
-                                    className="btn btn-success" to={`/editartelefones/${objeto.codigo}`}>
+                                    className="btn btn-success" to={`/pessoa/editartelefones/${objeto.codigo}`}>
                                         <i className="bi bi-phone"></i>
                                     </Link>
                                 </td>                                

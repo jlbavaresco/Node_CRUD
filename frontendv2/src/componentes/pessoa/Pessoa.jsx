@@ -84,7 +84,7 @@ class Estado extends Component {
                   return <Redirect to="/pessoa" />;
                 }
               }} />
-            <Route exact path="/editartelefones/:codigo"
+            <Route exact path="/pessoa/editartelefones/:codigo"
               render={props => {
                 console.log("props: " + props.match.params.codigo)
                 const objeto = this.state.listaObjetos.find(
@@ -101,7 +101,7 @@ class Estado extends Component {
                 }
               }} />              
 
-          </Switch>
+          </Switch>        
         </Router>
       </div>
     );
