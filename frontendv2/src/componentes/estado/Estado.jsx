@@ -6,15 +6,14 @@ import Tabela from "./Tabela";
 import Cadastrar from "./Cadastrar";
 import { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import axios from 'axios';
 
 class Estado extends Component {
 
   state = {
     listaObjetos: [],
     sequenciacodigo: 0,
-    objetoRecuperado: { codigo: 0, nome: "", uf: "" }
-
+    objetoRecuperado: { codigo: 0, nome: "", uf: "" },
+    alerta: { status: "", mensagem: "" }
   };
 
 
@@ -25,6 +24,12 @@ class Estado extends Component {
       .catch(err => console.log(err))
   }
 
+  // função para atualizar o alerta, que recebe o retorno da API
+  atualizaAlerta = (pstatus, pmensagem) => {
+    this.setState({ alerta: { status: pstatus, mensagem: pmensagem } })
+  }
+
+
   remover = async objeto => {
     if (window.confirm("Remover este objeto?")) {
       try {
@@ -33,26 +38,17 @@ class Estado extends Component {
           {
             method: "DELETE",
           }
-        );
-        window.location = "/estado";
+        ).then(response => response.json())
+          .then(json => {
+            //console.log("JSON retorno: " + "status: " + json.status  + " Message: " + json.message)          
+            this.atualizaAlerta(json.status, json.message);
+          })
+        this.getListaObjetos();
       } catch (err) {
         console.error(err.message);
       }
     }
   }
-
-  recuperar = async codigo => {
-    // aqui eu recupero um unico objeto passando o id
-    await fetch(`http://localhost:3002/api/estados/${codigo}`)
-      .then(response => response.json())
-      .then(data => this.setState({
-        objetoRecuperado: data[0] // aqui pego o primeiro elemento do json que foi recuperado  data[0]
-      }))
-      .catch(err => console.log(err))
-    console.log("Objeto recuperado: " + this.state.objetoRecuperado.codigo +
-      " Nome: " + this.state.objetoRecuperado.nome + " UF: " + this.state.objetoRecuperado.uf)
-  }
-
 
   componentDidMount() {
     this.getListaObjetos()
@@ -64,27 +60,26 @@ class Estado extends Component {
         <Router>
 
           <Switch>
-            <Route exact path="/estado" render={() => <Tabela listaObjetos={this.state.listaObjetos} remover={this.remover}
-              recuperar={this.recuperar} />} />
+            <Route exact path="/estado" render={() => <Tabela
+              // A chamada 
+              // getListaObjetos={this.getListaObjetos()}
+              // força a chamada do método para 
+              // atualizar os objetos pela api
+              getListaObjetos={this.getListaObjetos()}
+              listaObjetos={this.state.listaObjetos}
+              remover={this.remover}
+              alerta={this.state.alerta} />} />
             <Route exact path="/cadastrarestado" render={() => <Cadastrar editar={false}
-              objeto={{ codigo: 0, nome: "", uf: "" }} />} />
+              objeto={{ codigo: 0, nome: "", uf: "" }} atualizaAlerta={this.atualizaAlerta} />} />
             <Route exact path="/editarestado/:codigo"
               render={props => {
-                console.log("props: " + props.match.params.codigo)
-                const objeto = this.state.listaObjetos.find(
-                  objeto => objeto.codigo == props.match.params.codigo
-                );
+                return (
+                  <Cadastrar editar={true}
+                    objeto={{ codigo: props.match.params.codigo, nome: "", uf: "" }}
+                    atualizaAlerta={this.atualizaAlerta} />
+                )
 
-                if (objeto) {
-                  return (
-                    <Cadastrar editar={true} objeto={objeto} />
-                  )
-                } else {
-                  console.log("caiu no else")
-                  return <Redirect to="/estado" />;
-                }
               }} />
-
           </Switch>
         </Router>
       </div>

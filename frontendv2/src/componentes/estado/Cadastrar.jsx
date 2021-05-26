@@ -13,55 +13,73 @@ class Cadastrar extends Component {
     };
 
     acaoCadastrar = async e => {
+        var atualizaAlerta = this.props.atualizaAlerta;
         e.preventDefault();
         if (this.props.editar) {
-            //this.props.editar(this.state.objeto);
             try {
                 const body = {
-                  codigo: this.state.objeto.codigo,
-                  nome: this.state.objeto.nome,
-                  uf: this.state.objeto.uf
-                };
-                 const response =  await fetch("http://localhost:3002/api/estados", {
-                  method: "PUT",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(body),
-                });
-          
-                window.location = "/estado";
-              } catch (err) {
-                console.error(err.message);
-              }          
-        } else {
-            //this.props.inserir(this.state.objeto);
-            try {
-                const body = {
-                  nome: this.state.objeto.nome,
-                  uf: this.state.objeto.uf
+                    codigo: this.state.objeto.codigo,
+                    nome: this.state.objeto.nome,
+                    uf: this.state.objeto.uf
                 };
                 const response = await fetch("http://localhost:3002/api/estados", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(body),
-                });
-          
-                window.location = "/estado";
-              } catch (err) {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body),
+                }).then(response => response.json())
+                    .then(json => {
+                        //console.log("JSON retorno: " + "status: " + json.status + " Message: " + json.message)                    
+                        atualizaAlerta(json.status, json.message);
+                    });
+
+            } catch (err) {
                 console.error(err.message);
-              }               
+            }
+        } else {
+            try {
+                const body = {
+                    nome: this.state.objeto.nome,
+                    uf: this.state.objeto.uf
+                };
+                const response = await fetch("http://localhost:3002/api/estados", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body),
+                }).then(response => response.json())
+                    .then(json => {
+                        //console.log("JSON retorno: " + "status: " + json.status + " Message: " + json.message)                    
+                        atualizaAlerta(json.status, json.message);
+                    });
+            } catch (err) {
+                console.error(err.message);
+            }
         }
         this.setState({ redirecionar: true });
     };
 
+    recuperar = async codigo => {
+        // aqui eu recupero um unico objeto passando o id
+        await fetch(`http://localhost:3002/api/estados/${codigo}`)
+            .then(response => response.json())
+            .then(data => this.setState({
+                objeto: data[0] // aqui pego o primeiro elemento do json que foi recuperado  data[0]
+            }))
+            .catch(err => console.log(err))
+        //console.log("Objeto recuperado: " + this.state.objeto.codigo +
+        //    " Nome: " + this.state.objeto.nome + " UF: " + this.state.objeto.uf)
+    }
+
+    componentDidMount() {
+        if (this.props.editar) {
+            this.recuperar(this.state.objeto.codigo);
+        }
+    }
 
     render() {
         if (this.state.redirecionar === true) {
             return <Redirect to="/estado" />
         }
         return (
-
-
-
             <div style={{ padding: '20px' }}>
                 <h2>Edição de estado</h2>
                 <form id="formulario" onSubmit={this.acaoCadastrar}>
@@ -105,9 +123,6 @@ class Cadastrar extends Component {
                     <button type="submit" className="btn btn-success">
                         Salvar  <i className="bi bi-save"></i>
                     </button>
-
-
-
                 </form>
             </div>
 

@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-const Tabela = ({ listaObjetos, remover, recuperar }) => {
+import Alerta from '../Alerta';
+ 
+const Tabela = ({ listaObjetos, remover, alerta}) => {
+      
     return (
         <div>
             <h1>Tabela de Estados</h1>
-
+            <Alerta alerta={alerta} />
             <Link className="btn btn-primary" to="/cadastrarestado">
                 Novo  <i className="bi bi-file-earmark-plus"></i>
-            </Link>            
+            </Link>
             {listaObjetos.length === 0 && <h2>Nenhum registro encontrado</h2>}
             {listaObjetos.length > 0 && (
                 <table className="table" id="tabela">
@@ -29,15 +31,14 @@ const Tabela = ({ listaObjetos, remover, recuperar }) => {
                                 <td>{objeto.uf}</td>
                                 <td>
                                     <Link title="Editar" className="btn btn-info" to={`/editarestado/${objeto.codigo}`}>
-                                         <i className="bi bi-pencil-square"></i>
+                                        <i className="bi bi-pencil-square"></i>
                                     </Link>
                                 </td>
                                 <td>
                                     <button className="btn btn-danger" title="Remover" onClick={() => {
                                         remover(objeto);
-                                    }}><i className="bi bi-trash"></i></button>
-                                    <button  title="Recuperar" onClick={() => { recuperar(objeto.codigo);}}>Recuperar</button>                                    
-                                </td>                               
+                                    }}><i className="bi bi-trash"></i></button>                                
+                                </td>
                             </tr>
                         ))}
                     </tbody>
