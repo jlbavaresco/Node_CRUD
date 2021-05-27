@@ -13,7 +13,8 @@ class Estado extends Component {
   state = {
     listaObjetos: [],
     sequenciacodigo: 0,
-    telefones : []
+    telefones : [],
+    alerta: { status: "", mensagem: "" }    
   };
 
 
@@ -24,6 +25,11 @@ class Estado extends Component {
       .catch(err => console.log(err))
   }
 
+  // função para atualizar o alerta, que recebe o retorno da API
+  atualizaAlerta = (pstatus, pmensagem) => {
+    this.setState({ alerta: { status: pstatus, mensagem: pmensagem } })
+  }  
+
   remover = async objeto => {
     if (window.confirm("Remover este objeto?")) {
       try {
@@ -32,8 +38,12 @@ class Estado extends Component {
           {
             method: "DELETE",
           }
-        );
-        window.location = "/pessoa";
+        ).then(response => response.json())
+        .then(json => {
+          //console.log("JSON retorno: " + "status: " + json.status  + " Message: " + json.message)          
+          this.atualizaAlerta(json.status, json.message);
+        })
+      this.getListaObjetos();
       } catch (err) {
         console.error(err.message);
       }
@@ -62,28 +72,29 @@ class Estado extends Component {
       <div>
         <Router>
 
-          <Switch>
-                   
-            <Route exact path="/pessoa" render={() => <Tabela listaObjetos={this.state.listaObjetos} remover={this.remover}
-              recuperarTelefones={this.recuperarTelefones}/>} />
+          <Switch>                
+            <Route exact path="/pessoa" render={() => <Tabela
+              // A chamada 
+              // getListaObjetos={this.getListaObjetos()}
+              // força a chamada do método para 
+              // atualizar os objetos pela api
+              getListaObjetos={this.getListaObjetos()}
+              listaObjetos={this.state.listaObjetos}
+              remover={this.remover}
+              alerta={this.state.alerta}
+              recuperarTelefones={this.recuperarTelefones}/>} />              
             <Route exact path="/cadastrarpessoa" render={() => <Cadastrar editar={false}
-              objeto={{ codigo: 0, nome: "", nascimento: "" , salario : "", cidade_codigo : "" }} />} />
+              objeto={{ codigo: 0, nome: "", nascimento: "" , salario : "", cidade_codigo : "" }}
+              atualizaAlerta={this.atualizaAlerta} />} />
             <Route exact path="/editarpessoa/:codigo"
               render={props => {
-                console.log("props: " + props.match.params.codigo)
-                const objeto = this.state.listaObjetos.find(
-                  objeto => objeto.codigo == props.match.params.codigo
-                );
-
-                if (objeto) {
-                  return (
-                    <Cadastrar editar={true} objeto={objeto} />
-                  )
-                } else {
-                  console.log("caiu no else")
-                  return <Redirect to="/pessoa" />;
-                }
-              }} />
+                return (
+                  <Cadastrar editar={true}
+                    objeto={{ codigo: props.match.params.codigo, nome: "", 
+                    nascimento: "" , salario : "", cidade_codigo : "" }}
+                    atualizaAlerta={this.atualizaAlerta} />
+                )
+              }} />              
             <Route exact path="/pessoa/editartelefones/:codigo"
               render={props => {
                 console.log("props: " + props.match.params.codigo)

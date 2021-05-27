@@ -12,7 +12,6 @@ class Estado extends Component {
   state = {
     listaObjetos: [],
     sequenciacodigo: 0,
-    objetoRecuperado: { codigo: 0, nome: "", uf: "" },
     alerta: { status: "", mensagem: "" }
   };
 
@@ -78,7 +77,6 @@ class Estado extends Component {
                     objeto={{ codigo: props.match.params.codigo, nome: "", uf: "" }}
                     atualizaAlerta={this.atualizaAlerta} />
                 )
-
               }} />
           </Switch>
         </Router>

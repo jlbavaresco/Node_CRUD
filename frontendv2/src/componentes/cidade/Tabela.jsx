@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Alerta from '../Alerta';
 
-const Tabela = ({ listaObjetos, remover }) => {
+const Tabela = ({ listaObjetos, remover, alerta }) => {
     return (
         <div>
             <h1>Tabela de Cidades</h1>
-
+            <Alerta alerta={alerta} />
             <Link className="btn btn-primary" to="/cadastrarcidade">
                 Novo  <i className="bi bi-file-earmark-plus"></i>
             </Link>            

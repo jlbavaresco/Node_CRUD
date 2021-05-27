@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Alerta from '../Alerta';
 
 const formataData = (data) => {
     var arrNascimento = data.split('-');
@@ -7,11 +8,11 @@ const formataData = (data) => {
     return nascimentoFormatado;
 }
 
-const Tabela = ({ listaObjetos, remover , recuperarTelefones}) => {
+const Tabela = ({ listaObjetos, remover , recuperarTelefones, alerta}) => {
     return (
         <div>
-            <h1>Tabela de Cidades</h1>
-
+            <h1>Tabela de Pessoas</h1>
+            <Alerta alerta={alerta} />
             <Link className="btn btn-primary" to="/cadastrarpessoa">
                 Novo  <i className="bi bi-file-earmark-plus"></i>
             </Link>

@@ -64,7 +64,7 @@ module.exports.deletePessoa = deletePessoa;
 
 const getPessoaPorID = (request, response, next) => {
     const codigo = parseInt(request.params.codigo)
-    pool.query('SELECT p.codigo as codigo, p.nome as nome, to_char(p.nascimento, \'DD/MM/YYYY\') as nascimento, p.salario as salario,'
+    pool.query('SELECT p.codigo as codigo, p.nome as nome, to_char(p.nascimento, \'YYYY-MM-DD\') as nascimento, p.salario as salario,'
     + ' p.cidade as cidade_codigo, c.nome as cidade '
     + ' from pessoas p'
     + ' join cidades c on c.codigo = p.cidade where p.codigo = $1', [codigo], (error, results) => {

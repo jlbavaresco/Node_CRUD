@@ -13,8 +13,7 @@ class Estado extends Component {
   state = {
     listaObjetos: [],
     sequenciacodigo: 0,
-    objetoRecuperado: { codigo: 0, nome: "", uf: "" }
-
+    alerta: { status: "", mensagem: "" }
   };
 
 
@@ -25,6 +24,11 @@ class Estado extends Component {
       .catch(err => console.log(err))
   }
 
+  // função para atualizar o alerta, que recebe o retorno da API
+  atualizaAlerta = (pstatus, pmensagem) => {
+    this.setState({ alerta: { status: pstatus, mensagem: pmensagem } })
+  }  
+
   remover = async objeto => {
     if (window.confirm("Remover este objeto?")) {
       try {
@@ -33,8 +37,12 @@ class Estado extends Component {
           {
             method: "DELETE",
           }
-        );
-        window.location = "/cidade";
+        ).then(response => response.json())
+        .then(json => {
+          //console.log("JSON retorno: " + "status: " + json.status  + " Message: " + json.message)          
+          this.atualizaAlerta(json.status, json.message);
+        })
+      this.getListaObjetos();
       } catch (err) {
         console.error(err.message);
       }
@@ -52,27 +60,27 @@ class Estado extends Component {
       <div>
         <Router>
 
-          <Switch>
-            <Route exact path="/cidade" render={() => <Tabela listaObjetos={this.state.listaObjetos} remover={this.remover}/>} />
+          <Switch>            
+            <Route exact path="/cidade" render={() => <Tabela
+              // A chamada 
+              // getListaObjetos={this.getListaObjetos()}
+              // força a chamada do método para 
+              // atualizar os objetos pela api
+              getListaObjetos={this.getListaObjetos()}
+              listaObjetos={this.state.listaObjetos}
+              remover={this.remover}
+              alerta={this.state.alerta} />} />            
             <Route exact path="/cadastrarcidade" render={() => <Cadastrar editar={false}
-              objeto={{ codigo: 0, nome: "", estado_codigo: 0 }} />} />
+              objeto={{ codigo: 0, nome: "", estado_codigo: 0 }}
+              atualizaAlerta={this.atualizaAlerta} />} />
             <Route exact path="/editarcidade/:codigo"
               render={props => {
-                console.log("props: " + props.match.params.codigo)
-                const objeto = this.state.listaObjetos.find(
-                  objeto => objeto.codigo == props.match.params.codigo
-                );
-
-                if (objeto) {
-                  return (
-                    <Cadastrar editar={true} objeto={objeto} />
-                  )
-                } else {
-                  console.log("caiu no else")
-                  return <Redirect to="/cidade" />;
-                }
+                return (
+                  <Cadastrar editar={true}
+                    objeto={{ codigo: props.match.params.codigo, nome: "", estado_codigo: 0 }}
+                    atualizaAlerta={this.atualizaAlerta} />
+                )
               }} />
-
           </Switch>
         </Router>
       </div>

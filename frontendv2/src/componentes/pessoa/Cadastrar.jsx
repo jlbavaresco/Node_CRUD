@@ -10,13 +10,20 @@ class Cadastrar extends Component {
             nome: this.props.objeto.nome,
             nascimento: this.props.objeto.nascimento,
             salario: this.props.objeto.salario,
-            cidade_codigo : this.props.objeto.cidade_codigo           
+            cidade_codigo: this.props.objeto.cidade_codigo
         },
         cidades: [],
         redirecionar: false
     };
 
+    formataData = (data) => {
+        var arrNascimento = data.split('-');
+        var nascimentoFormatado = arrNascimento[2] + '/' + arrNascimento[1] + '/' + arrNascimento[0];
+        return nascimentoFormatado;
+    }
+
     acaoCadastrar = async e => {
+        var atualizaAlerta = this.props.atualizaAlerta;
         e.preventDefault();
         if (this.props.editar) {
             try {
@@ -25,39 +32,57 @@ class Cadastrar extends Component {
                     nome: this.state.objeto.nome,
                     nascimento: this.state.objeto.nascimento,
                     salario: this.state.objeto.salario,
-                    cidade: this.state.objeto.cidade_codigo                    
+                    cidade: this.state.objeto.cidade_codigo
                 };
                 const response = await fetch("http://localhost:3002/api/pessoas", {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body),
-                });
-
-                window.location = "/pessoa";
+                }).then(response => response.json())
+                    .then(json => {
+                        //console.log("JSON retorno: " + "status: " + json.status + " Message: " + json.message)                    
+                        atualizaAlerta(json.status, json.message);
+                    });
             } catch (err) {
                 console.error(err.message);
             }
         } else {
             try {
-                const body = {    
+                const body = {
                     nome: this.state.objeto.nome,
                     nascimento: this.state.objeto.nascimento,
                     salario: this.state.objeto.salario,
-                    cidade: this.state.objeto.cidade_codigo                    
+                    cidade: this.state.objeto.cidade_codigo
                 };
                 const response = await fetch("http://localhost:3002/api/pessoas", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body),
-                });
-
-                window.location = "/pessoa";
+                }).then(response => response.json())
+                    .then(json => {
+                        //console.log("JSON retorno: " + "status: " + json.status + " Message: " + json.message)                    
+                        atualizaAlerta(json.status, json.message);
+                    });
             } catch (err) {
                 console.error(err.message);
             }
         }
         this.setState({ redirecionar: true });
     };
+
+    recuperar = async codigo => {
+        // aqui eu recupero um unico objeto passando o id
+        // lembrar de na API no metodo que recupera pelo código mudar o formato da 
+        // data para YYYY-MM-DD para exibir corretamente no campo
+        await fetch(`http://localhost:3002/api/pessoas/${codigo}`)
+            .then(response => response.json())
+            .then(data => this.setState({
+                objeto: data[0] // aqui pego o primeiro elemento do json que foi recuperado  data[0]
+            }))
+            .catch(err => console.log(err))
+        //console.log("Objeto recuperado: " + this.state.objeto.codigo +
+        //    " Nome: " + this.state.objeto.nome + " Nascimento: " + this.state.objeto.nascimento)
+    }
 
     componentDidMount() {
         // if item exists, populate the state with proper data      
@@ -74,7 +99,11 @@ class Cadastrar extends Component {
                 });
             }).catch(error => {
                 console.log(error);
-            });      
+            });
+        // Caso edição recupera da API o objeto
+        if (this.props.editar) {
+            this.recuperar(this.state.objeto.codigo);
+        }
     }
 
 
@@ -114,7 +143,7 @@ class Cadastrar extends Component {
                             } />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="txtNascimento" className="form-label">Nome</label>
+                        <label htmlFor="txtNascimento" className="form-label">Nascimento</label>
                         <input type="date" required className="form-control" id="txtNascimento"
                             defaultValue={this.props.nascimento} value={this.state.objeto.nascimento}
                             onChange={
@@ -124,7 +153,7 @@ class Cadastrar extends Component {
                                     }
                                 })
                             } />
-                    </div>   
+                    </div>
                     <div className="form-group">
                         <label htmlFor="txtSalario" className="form-label">Salário</label>
                         <input type="number" required className="form-control" id="txtSalario" size="40" maxLength="40"
@@ -136,10 +165,10 @@ class Cadastrar extends Component {
                                     }
                                 })
                             } />
-                    </div>                                       
+                    </div>
                     <div className="form-group">
                         <label htmlFor="selectCidade" className="form-label">Cidade</label>
-                        <select  required className="form-control" id="selectCidade"
+                        <select required className="form-control" id="selectCidade"
                             defaultValue={this.props.cidade_codigo} value={this.state.objeto.cidade_codigo}
                             onChange={
                                 e => this.setState({
@@ -148,8 +177,8 @@ class Cadastrar extends Component {
                                     }
                                 })
                             } >
-                          
-                          {this.state.cidades.map((cidadeitem) => <option  key={cidadeitem.value} value={cidadeitem.value} >{cidadeitem.display}</option>)}                                
+
+                            {this.state.cidades.map((cidadeitem) => <option key={cidadeitem.value} value={cidadeitem.value} >{cidadeitem.display}</option>)}
                         </select>
 
                     </div>

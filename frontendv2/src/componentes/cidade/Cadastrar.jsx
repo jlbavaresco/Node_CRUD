@@ -8,13 +8,14 @@ class Cadastrar extends Component {
             codigo: this.props.objeto.codigo,
             nome: this.props.objeto.nome,
             estado: this.props.objeto.estado,
-            estado_codigo: this.props.objeto.estado_codigo,            
+            estado_codigo: this.props.objeto.estado_codigo,
         },
         estados: [],
         redirecionar: false
     };
 
     acaoCadastrar = async e => {
+        var atualizaAlerta = this.props.atualizaAlerta;
         e.preventDefault();
         if (this.props.editar) {
             try {
@@ -27,9 +28,11 @@ class Cadastrar extends Component {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body),
-                });
-
-                window.location = "/cidade";
+                }).then(response => response.json())
+                    .then(json => {
+                        //console.log("JSON retorno: " + "status: " + json.status + " Message: " + json.message)                    
+                        atualizaAlerta(json.status, json.message);
+                    });
             } catch (err) {
                 console.error(err.message);
             }
@@ -43,15 +46,28 @@ class Cadastrar extends Component {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body),
-                });
-
-                window.location = "/cidade";
+                }).then(response => response.json())
+                    .then(json => {
+                        //console.log("JSON retorno: " + "status: " + json.status + " Message: " + json.message)                    
+                        atualizaAlerta(json.status, json.message);
+                    });
             } catch (err) {
                 console.error(err.message);
             }
         }
         this.setState({ redirecionar: true });
     };
+    recuperar = async codigo => {
+        // aqui eu recupero um unico objeto passando o id
+        await fetch(`http://localhost:3002/api/cidades/${codigo}`)
+            .then(response => response.json())
+            .then(data => this.setState({
+                objeto: data[0] // aqui pego o primeiro elemento do json que foi recuperado  data[0]
+            }))
+            .catch(err => console.log(err))
+        //console.log("Objeto recuperado: " + this.state.objeto.codigo +
+        //    " Nome: " + this.state.objeto.nome + " UF: " + this.state.objeto.uf)
+    }
 
     componentDidMount() {
         // if item exists, populate the state with proper data      
@@ -68,7 +84,11 @@ class Cadastrar extends Component {
                 });
             }).catch(error => {
                 console.log(error);
-            }); 
+            });
+
+        if (this.props.editar) {
+            this.recuperar(this.state.objeto.codigo);
+        }
     }
 
 
@@ -109,7 +129,7 @@ class Cadastrar extends Component {
                     </div>
                     <div className="form-group">
                         <label htmlFor="selectEstado" className="form-label">Estado</label>
-                        <select  required className="form-control" id="selectEstado"
+                        <select required className="form-control" id="selectEstado"
                             defaultValue={this.props.estado_codigo} value={this.state.objeto.estado_codigo}
                             onChange={
                                 e => this.setState({
@@ -118,8 +138,8 @@ class Cadastrar extends Component {
                                     }
                                 })
                             } >
-                          
-                          {this.state.estados.map((estadoitem) => <option  key={estadoitem.value} value={estadoitem.value} >{estadoitem.display}</option>)}                                
+
+                            {this.state.estados.map((estadoitem) => <option key={estadoitem.value} value={estadoitem.value} >{estadoitem.display}</option>)}
                         </select>
 
                     </div>
