@@ -63,7 +63,7 @@ class CadastrarTelefone extends Component {
 
     recuperar = async codigo => {
         // aqui eu recupero um unico objeto passando o id
-        await fetch(`http://localhost:3002/api/telefones/${codigo}`)
+        await fetch(`http://localhost:3002/api/telefone/${codigo}`)
             .then(response => response.json())
             .then(data => this.setState({
                 telefone: data[0] // aqui pego o primeiro elemento do json que foi recuperado  data[0]
@@ -76,7 +76,7 @@ class CadastrarTelefone extends Component {
     componentDidMount() {
         console.log("props: " + this.props.telefone.codigo)
         if (this.props.editar) {
-            this.recuperar(this.props.telefone.codigo);
+            this.recuperar(this.state.telefone.codigo);
         }
     }
 

@@ -46,9 +46,10 @@ app
     .put(controleTelefone.updateTelefone)
 app.route('/api/telefones/:codigopessoa')
     .get(controleTelefone.getTelefones)
-app.route('/api/telefones/:codigo') 
-    .get(controleTelefone.getTelefonePorID)   
-    .delete(controleTelefone.deleteTelefone)  
+app.route('/api/telefones/:codigo')   
+    .delete(controleTelefone.deleteTelefone) 
+app.route('/api/telefone/:codigo') 
+    .get(controleTelefone.getTelefonePorID)        
 
 
 app.listen(process.env.PORT || 3002, () => {

@@ -8,7 +8,7 @@ const formataData = (data) => {
     return nascimentoFormatado;
 }
 
-const Tabela = ({ listaObjetos, remover , recuperarTelefones, alerta}) => {
+const Tabela = ({ listaObjetos, remover , alerta}) => {
     return (
         <div>
             <h1>Tabela de Pessoas</h1>
@@ -26,7 +26,6 @@ const Tabela = ({ listaObjetos, remover , recuperarTelefones, alerta}) => {
                             <th scope="col">Nascimento</th>
                             <th scope="col">Salario</th>
                             <th scope="col">Cidade</th>
-                            <th width="3%"></th>
                             <th width="3%"></th>
                             <th width="3%"></th>
                             <th width="3%"></th>
@@ -49,10 +48,6 @@ const Tabela = ({ listaObjetos, remover , recuperarTelefones, alerta}) => {
                                     <button className="btn btn-danger" title="Remover" onClick={() => {
                                         remover(objeto);
                                     }}><i className="bi bi-trash"></i></button>
-                                </td>
-                                <td>
-                                <button  title="Telefones" className="btn btn-warning" onClick={() => { recuperarTelefones(objeto.codigo);}}>
-                                    <i className="bi bi-phone"></i></button>                                                                    
                                 </td>
                                 <td>
                                     <Link title="Editar telefones" 

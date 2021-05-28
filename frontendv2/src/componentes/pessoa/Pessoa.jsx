@@ -51,19 +51,6 @@ class Estado extends Component {
     }
   }
 
-  recuperarTelefones = async codigo => {
-    // aqui eu recupero um unico objeto passando o id
-    await fetch(`http://localhost:3002/api/telefones/${codigo}`)
-      .then(response => response.json())
-      .then(data => this.setState({
-        telefones: data // aqui pego o primeiro elemento do json que foi recuperado  data[0]
-      }))
-      .catch(err => console.log(err))
-    console.log("Telefenes recuperados: " + this.state.telefones.length)
-  }
-
-
-
   componentDidMount() {
     this.getListaObjetos()
   }
@@ -98,6 +85,16 @@ class Estado extends Component {
                     atualizaAlerta={this.atualizaAlerta} />
                 )
               }} />
+            <Route exact path="/pessoa/cadastrartelefone/:codigo"
+              render={props => {
+                return (
+                  <CadastrarTelefone editar={false}
+                    telefone={{
+                      codigo: 0, numero: "",
+                      descricao: "", pessoa: props.match.params.codigo
+                    }} atualizaAlerta={this.atualizaAlerta} />
+                )
+              }} />
             <Route exact path="/pessoa/editartelefone/:codigo"
               render={props => {
                 return (
@@ -105,7 +102,7 @@ class Estado extends Component {
                     telefone={{
                       codigo: props.match.params.codigo, numero: "",
                       descricao: "", pessoa: ""
-                    }} atualizaAlerta={this.atualizaAlerta}  />
+                    }} atualizaAlerta={this.atualizaAlerta} />
                 )
               }} />
             <Route exact path="/pessoa/editartelefones/:codigo"
@@ -115,9 +112,10 @@ class Estado extends Component {
                     objeto={{
                       codigo: props.match.params.codigo, nome: "",
                       nascimento: "", salario: "", cidade_codigo: ""
-                    }} />
+                    }} atualizaAlerta={this.atualizaAlerta}
+                    alerta={this.state.alerta} />
                 )
-              }} />              
+              }} />
           </Switch>
         </Router>
       </div>

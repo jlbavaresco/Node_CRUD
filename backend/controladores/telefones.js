@@ -61,8 +61,9 @@ module.exports.getTelefones = getTelefones;
 
 const getTelefonePorID = (request, response, next) => {
     const codigo = parseInt(request.params.codigo)
-    pool.query('SELECT codigo, numero, descricao, pessoa where codigo = $1', [codigo], (error, results) => {
+    pool.query('SELECT codigo, numero, descricao, pessoa from telefones where codigo = $1', [codigo], (error, results) => {
         if (error || results.rowCount == 0) {
+            console.log(error)
             return response.status(401).json({ status: 'error', message: 'Não foi possivel recuperar o telefone' });
         }
         response.status(200).json(results.rows)
