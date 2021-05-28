@@ -118,7 +118,7 @@ class Telefones extends Component {
                                 <td>{telefone.numero}</td>
                                 <td>{telefone.descricao}</td>
                                 <td>
-                                    <Link title="Editar" className="btn btn-info" to={`/editartelefone/${telefone.codigo}`}>
+                                    <Link title="Editar" className="btn btn-info" to={`/pessoa/editartelefone/${telefone.codigo}`}>
                                         <i className="bi bi-pencil-square"></i>
                                     </Link>
                                 </td>

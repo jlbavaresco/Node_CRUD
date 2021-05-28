@@ -46,7 +46,8 @@ app
     .put(controleTelefone.updateTelefone)
 app.route('/api/telefones/:codigopessoa')
     .get(controleTelefone.getTelefones)
-app.route('/api/telefones/:codigo')    
+app.route('/api/telefones/:codigo') 
+    .get(controleTelefone.getTelefonePorID)   
     .delete(controleTelefone.deleteTelefone)  
 
 

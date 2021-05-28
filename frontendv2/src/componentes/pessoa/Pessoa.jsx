@@ -4,6 +4,7 @@ import 'jquery/dist/jquery.min.js'
 import 'font-awesome/css/font-awesome.min.css'
 import Tabela from "./Tabela";
 import Cadastrar from "./Cadastrar";
+import CadastrarTelefone from "./CadastrarTelefone";
 import Telefones from "./Telefones";
 import { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
@@ -13,8 +14,8 @@ class Estado extends Component {
   state = {
     listaObjetos: [],
     sequenciacodigo: 0,
-    telefones : [],
-    alerta: { status: "", mensagem: "" }    
+    telefones: [],
+    alerta: { status: "", mensagem: "" }
   };
 
 
@@ -28,7 +29,7 @@ class Estado extends Component {
   // função para atualizar o alerta, que recebe o retorno da API
   atualizaAlerta = (pstatus, pmensagem) => {
     this.setState({ alerta: { status: pstatus, mensagem: pmensagem } })
-  }  
+  }
 
   remover = async objeto => {
     if (window.confirm("Remover este objeto?")) {
@@ -39,11 +40,11 @@ class Estado extends Component {
             method: "DELETE",
           }
         ).then(response => response.json())
-        .then(json => {
-          //console.log("JSON retorno: " + "status: " + json.status  + " Message: " + json.message)          
-          this.atualizaAlerta(json.status, json.message);
-        })
-      this.getListaObjetos();
+          .then(json => {
+            //console.log("JSON retorno: " + "status: " + json.status  + " Message: " + json.message)          
+            this.atualizaAlerta(json.status, json.message);
+          })
+        this.getListaObjetos();
       } catch (err) {
         console.error(err.message);
       }
@@ -59,7 +60,7 @@ class Estado extends Component {
       }))
       .catch(err => console.log(err))
     console.log("Telefenes recuperados: " + this.state.telefones.length)
-  }  
+  }
 
 
 
@@ -72,7 +73,7 @@ class Estado extends Component {
       <div>
         <Router>
 
-          <Switch>                
+          <Switch>
             <Route exact path="/pessoa" render={() => <Tabela
               // A chamada 
               // getListaObjetos={this.getListaObjetos()}
@@ -82,37 +83,42 @@ class Estado extends Component {
               listaObjetos={this.state.listaObjetos}
               remover={this.remover}
               alerta={this.state.alerta}
-              recuperarTelefones={this.recuperarTelefones}/>} />              
+              recuperarTelefones={this.recuperarTelefones} />} />
             <Route exact path="/cadastrarpessoa" render={() => <Cadastrar editar={false}
-              objeto={{ codigo: 0, nome: "", nascimento: "" , salario : "", cidade_codigo : "" }}
+              objeto={{ codigo: 0, nome: "", nascimento: "", salario: "", cidade_codigo: "" }}
               atualizaAlerta={this.atualizaAlerta} />} />
             <Route exact path="/editarpessoa/:codigo"
               render={props => {
                 return (
                   <Cadastrar editar={true}
-                    objeto={{ codigo: props.match.params.codigo, nome: "", 
-                    nascimento: "" , salario : "", cidade_codigo : "" }}
+                    objeto={{
+                      codigo: props.match.params.codigo, nome: "",
+                      nascimento: "", salario: "", cidade_codigo: ""
+                    }}
                     atualizaAlerta={this.atualizaAlerta} />
                 )
-              }} />              
+              }} />
+            <Route exact path="/pessoa/editartelefone/:codigo"
+              render={props => {
+                return (
+                  <CadastrarTelefone editar={true}
+                    objeto={{
+                      codigo: props.match.params.codigo, numero: "",
+                      descricao: "", pessoa: ""
+                    }} />
+                )
+              }} />
             <Route exact path="/pessoa/editartelefones/:codigo"
               render={props => {
-                console.log("props: " + props.match.params.codigo)
-                const objeto = this.state.listaObjetos.find(
-                  objeto => objeto.codigo == props.match.params.codigo
-                );
-
-                if (objeto) {
-                  return (
-                    <Telefones editar={true} objeto={objeto} />
-                  )
-                } else {
-                  console.log("caiu no else")
-                  return <Redirect to="/pessoa" />;
-                }
+                return (
+                  <Telefones editar={true}
+                    objeto={{
+                      codigo: props.match.params.codigo, nome: "",
+                      nascimento: "", salario: "", cidade_codigo: ""
+                    }} />
+                )
               }} />              
-
-          </Switch>        
+          </Switch>
         </Router>
       </div>
     );
