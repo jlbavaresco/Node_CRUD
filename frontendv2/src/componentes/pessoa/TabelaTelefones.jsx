@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom'
 import { Link } from 'react-router-dom';
 import Alerta from '../Alerta';
 
-class Telefones extends Component {
+class TabelaTelefones extends Component {
 
     state = {
         objeto: {
@@ -33,7 +33,7 @@ class Telefones extends Component {
               }
             ).then(response => response.json())
             .then(json => {
-              //console.log("JSON retorno: " + "status: " + json.status  + " Message: " + json.message)          
+              console.log("JSON retorno: " + "status: " + json.status  + " Message: " + json.message)          
               this.atualizaAlerta(json.status, json.message);
             })
            // window.location = `/editartelefones/${this.state.objeto.codigo}`;
@@ -64,21 +64,11 @@ class Telefones extends Component {
         if (this.state.redirecionar === true) {
             return <Redirect to="/pessoa" />
         }
-        
         return (
             <div>
              
             <h1>Telefones do {this.state.objeto.nome} - Código {this.state.objeto.codigo}</h1>
-            <Alerta alerta={this.state.alerta} />
-            <Link className="btn btn-primary" to="/cadastrartelefone">
-                Novo Telefone <i className="bi bi-file-earmark-plus"></i>
-            </Link>
-            <Link className="btn btn-info" to="/pessoa">
-                Voltar para listagem<i className="bi bi-arrow-left"></i>
-            </Link>               
-            <Link className="btn btn-primary" to={{pathname: `/pessoa/editartelefones/${this.state.objeto.codigo}`}}>
-                Voltar<i className="bi bi-file-earmark-plus"></i>
-            </Link>            
+            <Alerta alerta={alerta} />
             {this.state.telefones.length === 0 && <h2>Nenhum registro encontrado</h2>}
             {this.state.telefones.length > 0 && (
                 <table className="table">
@@ -120,4 +110,4 @@ class Telefones extends Component {
     }
 }
 
-export default Telefones;
+export default TabelaTelefones;

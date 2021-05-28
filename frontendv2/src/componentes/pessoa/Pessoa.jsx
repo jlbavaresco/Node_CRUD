@@ -102,10 +102,10 @@ class Estado extends Component {
               render={props => {
                 return (
                   <CadastrarTelefone editar={true}
-                    objeto={{
+                    telefone={{
                       codigo: props.match.params.codigo, numero: "",
                       descricao: "", pessoa: ""
-                    }} />
+                    }} atualizaAlerta={this.atualizaAlerta}  />
                 )
               }} />
             <Route exact path="/pessoa/editartelefones/:codigo"
