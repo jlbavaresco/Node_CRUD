@@ -12,47 +12,16 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 class Pessoa extends Component {
 
   state = {
-    listaObjetos: [],
-    sequenciacodigo: 0,
-    telefones: [],
     alerta: { status: "", mensagem: "" }
   };
-
-
-  async getListaObjetos() {
-    await fetch('http://localhost:3002/api/pessoas')
-      .then(response => response.json())
-      .then(listaObjetos => this.setState({ listaObjetos }))
-      .catch(err => console.log(err))
-  }
 
   // função para atualizar o alerta, que recebe o retorno da API
   atualizaAlerta = (pstatus, pmensagem) => {
     this.setState({ alerta: { status: pstatus, mensagem: pmensagem } })
   }
 
-  remover = async objeto => {
-    if (window.confirm("Remover este objeto?")) {
-      try {
-        await fetch(
-          `http://localhost:3002/api/pessoas/${objeto.codigo}`,
-          {
-            method: "DELETE",
-          }
-        ).then(response => response.json())
-          .then(json => {
-            //console.log("JSON retorno: " + "status: " + json.status  + " Message: " + json.message)          
-            this.atualizaAlerta(json.status, json.message);
-          })
-        this.getListaObjetos();
-      } catch (err) {
-        console.error(err.message);
-      }
-    }
-  }
 
   componentDidMount() {
-    this.getListaObjetos()
   }
 
   render() {
@@ -62,15 +31,8 @@ class Pessoa extends Component {
 
           <Switch>
             <Route exact path="/pessoa" render={() => <Tabela
-              // A chamada 
-              // getListaObjetos={this.getListaObjetos()}
-              // força a chamada do método para 
-              // atualizar os objetos pela api
-              getListaObjetos={this.getListaObjetos()}
-              listaObjetos={this.state.listaObjetos}
-              remover={this.remover}
               alerta={this.state.alerta}
-              recuperarTelefones={this.recuperarTelefones} />} />
+              atualizaAlerta={this.atualizaAlerta} />} />
             <Route exact path="/cadastrarpessoa" render={() => <Cadastrar editar={false}
               objeto={{ codigo: 0, nome: "", nascimento: "", salario: "", cidade_codigo: "" }}
               atualizaAlerta={this.atualizaAlerta} />} />
@@ -112,8 +74,8 @@ class Pessoa extends Component {
                     objeto={{
                       codigo: props.match.params.codigo, nome: "",
                       nascimento: "", salario: "", cidade_codigo: ""
-                    }} atualizaAlerta={this.atualizaAlerta}
-                    alerta={this.state.alerta} />
+                    }} atualizaAlerta={this.atualizaAlerta}                    
+                    alerta={this.state.alerta}/>
                 )
               }} />
           </Switch>

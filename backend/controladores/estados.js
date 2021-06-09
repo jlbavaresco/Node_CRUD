@@ -37,7 +37,7 @@ const updateEstado = (request, response, next) => {
             if (error || results.rowCount == 0) {
                 return response.status(401).json({ status: 'error', message: 'Não foi possivel atualizar o estado' });
             }
-            return response.status(201).json({ status: 'success', message: 'estado atualizado com sucesso' })
+            return response.status(201).json({ status: 'success', message: 'Estado atualizado com sucesso' })
         },
     )
 }
