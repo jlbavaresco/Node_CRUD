@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
+import config from '../../Config';
 
 class Cadastrar extends Component {
 
@@ -24,7 +25,7 @@ class Cadastrar extends Component {
                     nome: this.state.objeto.nome,
                     estado: this.state.objeto.estado_codigo
                 };
-                const response = await fetch("http://localhost:3002/api/cidades", {
+                const response = await fetch('http://'+config.enderecoapi+':3002/api/cidades', {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body),
@@ -42,7 +43,7 @@ class Cadastrar extends Component {
                     nome: this.state.objeto.nome,
                     estado: this.state.objeto.estado_codigo
                 };
-                const response = await fetch("http://localhost:3002/api/cidades", {
+                const response = await fetch('http://'+config.enderecoapi+':3002/api/cidades', {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body),
@@ -59,7 +60,7 @@ class Cadastrar extends Component {
     };
     recuperar = async codigo => {
         // aqui eu recupero um unico objeto passando o id
-        await fetch(`http://localhost:3002/api/cidades/${codigo}`)
+        await fetch(`http://${config.enderecoapi}:3002/api/cidades/${codigo}`)
             .then(response => response.json())
             .then(data => this.setState({
                 objeto: data[0] // aqui pego o primeiro elemento do json que foi recuperado  data[0]
@@ -71,7 +72,7 @@ class Cadastrar extends Component {
 
     componentDidMount() {
         // if item exists, populate the state with proper data      
-        fetch("http://localhost:3002/api/estados")
+        fetch('http://'+config.enderecoapi+':3002/api/estados')
             .then((response) => {
                 return response.json();
             })

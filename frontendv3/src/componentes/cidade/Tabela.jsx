@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Alerta from '../Alerta';
 import MaterialTable from 'material-table'
 import { Icon } from '@material-ui/core';
+import config from '../../Config';
 
 class Tabela extends Component {
 
@@ -11,7 +12,7 @@ class Tabela extends Component {
     };
 
     async getListaObjetos() {
-        await fetch('http://localhost:3002/api/cidades')
+        await fetch('http://'+config.enderecoapi+':3002/api/cidades')
             .then(response => response.json())
             .then(listaObjetos => this.setState({ listaObjetos }))
             .catch(err => console.log(err))
@@ -21,7 +22,7 @@ class Tabela extends Component {
         if (window.confirm("Remover este objeto?")) {
             try {
                 await fetch(
-                    `http://localhost:3002/api/cidades/${objeto.codigo}`,
+                    `http://${config.enderecoapi}:3002/api/cidades/${objeto.codigo}`,
                     {
                         method: "DELETE",
                     }

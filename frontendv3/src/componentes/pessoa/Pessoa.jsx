@@ -7,7 +7,7 @@ import Cadastrar from "./Cadastrar";
 import CadastrarTelefone from "./CadastrarTelefone";
 import Telefones from "./Telefones";
 import { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 class Pessoa extends Component {
 

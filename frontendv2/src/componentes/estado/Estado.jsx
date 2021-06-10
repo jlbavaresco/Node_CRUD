@@ -10,47 +10,16 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 class Estado extends Component {
 
   state = {
-    listaObjetos: [],
-    sequenciacodigo: 0,
     alerta: { status: "", mensagem: "" }
   };
-
-
-  async getListaObjetos() {
-    await fetch('http://localhost:3002/api/estados')
-      .then(response => response.json())
-      .then(listaObjetos => this.setState({ listaObjetos }))
-      .catch(err => console.log(err))
-  }
 
   // função para atualizar o alerta, que recebe o retorno da API
   atualizaAlerta = (pstatus, pmensagem) => {
     this.setState({ alerta: { status: pstatus, mensagem: pmensagem } })
   }
 
-
-  remover = async objeto => {
-    if (window.confirm("Remover este objeto?")) {
-      try {
-        await fetch(
-          `http://localhost:3002/api/estados/${objeto.codigo}`,
-          {
-            method: "DELETE",
-          }
-        ).then(response => response.json())
-          .then(json => {
-            //console.log("JSON retorno: " + "status: " + json.status  + " Message: " + json.message)          
-            this.atualizaAlerta(json.status, json.message);
-          })
-        this.getListaObjetos();
-      } catch (err) {
-        console.error(err.message);
-      }
-    }
-  }
-
   componentDidMount() {
-    this.getListaObjetos()
+
   }
 
   render() {
@@ -60,14 +29,7 @@ class Estado extends Component {
 
           <Switch>
             <Route exact path="/estado" render={() => <Tabela
-              // A chamada 
-              // getListaObjetos={this.getListaObjetos()}
-              // força a chamada do método para 
-              // atualizar os objetos pela api
-              getListaObjetos={this.getListaObjetos()}
-              listaObjetos={this.state.listaObjetos}
-              remover={this.remover}
-              alerta={this.state.alerta} />} />
+              alerta={this.state.alerta} atualizaAlerta={this.atualizaAlerta}/>} />
             <Route exact path="/cadastrarestado" render={() => <Cadastrar editar={false}
               objeto={{ codigo: 0, nome: "", uf: "" }} atualizaAlerta={this.atualizaAlerta} />} />
             <Route exact path="/editarestado/:codigo"

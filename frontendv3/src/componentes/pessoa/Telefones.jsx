@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Alerta from '../Alerta';
 import MaterialTable from 'material-table'
 import { Icon } from '@material-ui/core';
+import config from '../../Config';
 
 class Telefones extends Component {
 
@@ -24,7 +25,7 @@ class Telefones extends Component {
         if (window.confirm("Remover este objeto?")) {
             try {
                 await fetch(
-                    `http://localhost:3002/api/telefones/${telefone.codigo}`,
+                    `http://${config.enderecoapi}:3002/api/telefones/${telefone.codigo}`,
                     {
                         method: "DELETE",
                     }
@@ -43,7 +44,7 @@ class Telefones extends Component {
 
     recuperarTelefones = async codigo => {
         // aqui eu recupero um unico objeto passando o id
-        await fetch(`http://localhost:3002/api/telefones/${codigo}`)
+        await fetch(`http://${config.enderecoapi}:3002/api/telefones/${codigo}`)
             .then(response => response.json())
             .then(data => this.setState({
                 telefones: data // aqui pego o primeiro elemento do json que foi recuperado  data[0]
@@ -56,7 +57,7 @@ class Telefones extends Component {
         // aqui eu recupero um unico objeto passando o id
         // lembrar de na API no metodo que recupera pelo código mudar o formato da 
         // data para YYYY-MM-DD para exibir corretamente no campo
-        await fetch(`http://localhost:3002/api/pessoas/${codigo}`)
+        await fetch(`http://${config.enderecoapi}:3002/api/pessoas/${codigo}`)
             .then(response => response.json())
             .then(data => this.setState({
                 objeto: data[0] // aqui pego o primeiro elemento do json que foi recuperado  data[0]

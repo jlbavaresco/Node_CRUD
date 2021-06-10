@@ -1,12 +1,10 @@
-//import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'jquery/dist/jquery.min.js'
 import 'font-awesome/css/font-awesome.min.css'
 import Tabela from "./Tabela";
 import Cadastrar from "./Cadastrar";
 import { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import axios from 'axios';
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 class Estado extends Component {
 

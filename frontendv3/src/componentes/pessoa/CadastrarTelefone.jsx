@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
+import config from '../../Config';
 
 class CadastrarTelefone extends Component {
 
@@ -15,7 +16,7 @@ class CadastrarTelefone extends Component {
     };
 
 
-    acaoCadastrar = async e => {       
+    acaoCadastrar = async e => {
         e.preventDefault();
         if (this.props.editar) {
             try {
@@ -25,7 +26,7 @@ class CadastrarTelefone extends Component {
                     descricao: this.state.telefone.descricao,
                     pessoa: this.state.telefone.pessoa
                 };
-                const response = await fetch("http://localhost:3002/api/telefones", {
+                const response = await fetch('http://'+config.enderecoapi+':3002/api/telefones', {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body),
@@ -44,7 +45,7 @@ class CadastrarTelefone extends Component {
                     descricao: this.state.telefone.descricao,
                     pessoa: this.state.telefone.pessoa
                 };
-                const response = await fetch("http://localhost:3002/api/telefones", {
+                const response = await fetch('http://'+config.enderecoapi+':3002/api/telefones', {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body),
@@ -62,7 +63,7 @@ class CadastrarTelefone extends Component {
 
     recuperar = async codigo => {
         // aqui eu recupero um unico objeto passando o id
-        await fetch(`http://localhost:3002/api/telefone/${codigo}`)
+        await fetch(`http://${config.enderecoapi}:3002/api/telefone/${codigo}`)
             .then(response => response.json())
             .then(data => this.setState({
                 telefone: data[0] // aqui pego o primeiro elemento do json que foi recuperado  data[0]
@@ -83,7 +84,7 @@ class CadastrarTelefone extends Component {
     render() {
         if (this.state.redirecionar === true) {
 
-            return <Redirect to={{pathname: `/pessoa/editartelefones/${this.state.telefone.pessoa}`}} />
+            return <Redirect to={{ pathname: `/pessoa/editartelefones/${this.state.telefone.pessoa}` }} />
         }
         return (
 

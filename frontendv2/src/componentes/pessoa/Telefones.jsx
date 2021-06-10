@@ -88,7 +88,8 @@ class Telefones extends Component {
                 <Link className="btn btn-primary" to={{ pathname: `/pessoa/cadastrartelefone/${this.state.objeto.codigo}` }}>
                     Novo Telefone <i className="bi bi-file-earmark-plus"></i>
                 </Link>
-                <Link className="btn btn-info" to="/pessoa">
+                <Link className="btn btn-info" to="/pessoa" 
+                onClick={() => { this.props.atualizaAlerta("","")}}>
                     Voltar para listagem<i className="bi bi-arrow-left"></i>
                 </Link>
                 {this.state.telefones.length === 0 && <h2>Nenhum registro encontrado</h2>}
